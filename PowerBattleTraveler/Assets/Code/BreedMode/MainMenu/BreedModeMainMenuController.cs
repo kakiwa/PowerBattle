@@ -18,11 +18,13 @@ public class BreedModeMainMenuController : MonoBehaviour
     }
 
     //ターン情報
-    [SerializeField]
-    private struct TurnCount{
+    private struct TurnCount
+    {
         int Month;    //　月
         int Week;    //　週
     }
+    [SerializeField]
+    private TurnCount m_turnCount;
 
     void Start()
     {
