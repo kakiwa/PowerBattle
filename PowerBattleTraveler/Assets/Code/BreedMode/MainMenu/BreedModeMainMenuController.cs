@@ -18,6 +18,7 @@ public class BreedModeMainMenuController : MonoBehaviour
     }
 
     //ターン情報
+    [System.Serializable]
     private struct TurnCount
     {
         int Month;    //　月
