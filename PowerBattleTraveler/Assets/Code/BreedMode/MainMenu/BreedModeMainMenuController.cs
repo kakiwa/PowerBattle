@@ -8,14 +8,7 @@ namespace BreedMode
 {
 public class BreedModeMainMenuController : MonoBehaviour,IMainMenuEvents
 {
-    #region  // 変数
-    //　セレクトUI
-    [SerializeField]
-    private BreedModeMainMenuSelect m_breedModeMenuSelect = default;
-
-    //　メニュー種別
-    private MenuType m_menuType = default;
-
+    #region  // 構造体
     //　ターン情報
     public struct TurnData
     {
@@ -24,15 +17,26 @@ public class BreedModeMainMenuController : MonoBehaviour,IMainMenuEvents
         public int week { get; set; }    //　週
         public int turnCount { get; set; }    //　ターン数
     }
+    #endregion    // 構造体
+
+    #region  // 変数
+    //　セレクトUI
+    [SerializeField]
+    private BreedModeMainMenuSelect m_breedModeMenuSelect = default;
+
+    //　メニュー種別
+    private MenuType m_menuType = default;
+
     [SerializeField]
     private TurnData m_turnData = default;
 
     //　プレイヤー基礎ステータス
-    public PlayerBattleData m_playerBattleData = default;
+    private PlayerBattleData m_playerBattleData = default;
 
     //　育成モード用ステータス
-    public BreedData m_breedModeData = default;
-    #endregion
+    private BreedData m_breedModeData = default;
+    
+    #endregion    // 変数
 
     void Awake()
     {
