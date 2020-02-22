@@ -2,19 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// バトルを司る
-/// </summary>
-public class BattleController : MonoBehaviour, IBattleEvents
-{
-    public void OnMenu()
-    {
-        Debug.Log("メニューボタンが押された！");
-    }
+namespace Battle {
 
-    public void OnPause()
-    {
-        Debug.Log("ポーズボタンがおささった！");
-    }
+/// <summary>
+/// バトルの入力をイベントに流す
+/// </summary>
+public class Controller
+    : MonoBehaviour
+{
+
+    // BattStateManager m_StateManage = default;
+
+
+    
+
 
 }
+
+} // Battle
