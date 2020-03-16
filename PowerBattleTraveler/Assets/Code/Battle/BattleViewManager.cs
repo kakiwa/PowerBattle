@@ -11,38 +11,71 @@ namespace Battle {
 public class BattleViewManager : MonoBehaviour
 {
 
-    #region 変数
+    [SerializeField]
+    private TurnView m_TurnView = default;
 
     [SerializeField]
-    private Text m_Text;    //< アニメーション代用表示テキスト
-    #endregion 変数
+    private Transform m_BattleMenuRoot = default;      //< 戦闘コマンドメニューのルートオブジェ
+    [SerializeField]
+    private GameObject m_BattleMenuPrefab = default;    //< 戦闘コマンドプレファブ
+    private BattleMenuView m_BattleMenu = default;      //< 戦闘メニュー
+
+    [SerializeField]
+    private ActorsRootView m_ActorsRootView = default;
 
 
-    #region 公開関数
-    public async UniTask<bool> AnimationAsync()
+    public ActorsRootView GetActorsView() {return m_ActorsRootView;}
+
+    private void Awake()
+    {
+
+    }
+
+    public async UniTask SetupView(BattleDataManager battleData)
+    {
+        await UniTask.Yield();
+
+        var obj = Instantiate(m_BattleMenuPrefab, m_BattleMenuRoot);
+        m_BattleMenu = obj.GetComponent<BattleMenuView>();
+
+
+        // キャラののView初期化
+        foreach ( var actor in battleData.Actors)
+        {
+            Debug.Log(actor.Key);
+            m_ActorsRootView.AddActor(actor);
+        }
+
+    }
+
+    public async UniTask CommandAsync()
+    {
+        Debug.Log("行動選択開始");
+
+        await m_BattleMenu.OnBattleMenuSelected();
+
+        Debug.Log("行動選択終了");
+    }
+
+    public async UniTask AnimationAsync()
     {
         Debug.Log("演出開始");
 
         await SomeAnim();
 
         Debug.Log("演出終了");
-        return true;
     }
 
-    #endregion 公開関数
-
-    #region 非公開関数
     public async UniTask SomeAnim()
     {
         await UniTask.Delay(System.TimeSpan.FromSeconds(1));
         Debug.Log("1");
-        await UniTask.Delay(System.TimeSpan.FromSeconds(1));
-        Debug.Log("2");
-        await UniTask.Delay(System.TimeSpan.FromSeconds(1));
-        Debug.Log("3");
-        await UniTask.Delay(System.TimeSpan.FromSeconds(1));
     }
-    #endregion 非公開関数
+
+    public void setTurn(int turn)
+    {
+        m_TurnView.SetTurn(turn);
+    }
 }
 
 } // Battle
