@@ -63,7 +63,6 @@ public class MasterDataManager : MonoBehaviour
         }
     }
 
-
     //-----------------------------------------------------------------------//
     //　マスタデータ取得処理　：　新規追加のマスタがある場合ここに追加
     //-----------------------------------------------------------------------//
@@ -103,8 +102,6 @@ public class MasterDataManager : MonoBehaviour
         breedFieldLaneMaster = default;
         breedFieldMassMaster = default;
     }
-
-
 
 }
 }

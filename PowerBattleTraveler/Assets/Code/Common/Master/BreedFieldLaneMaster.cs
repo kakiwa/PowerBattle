@@ -26,7 +26,7 @@ public class BreedFieldLaneMaster
         } 
     }
 
-        [System.Serializable]
+    [System.Serializable]
     public struct BreedFieldLaneMasterData
     {
         public BreedFieldLaneMasterData(int id, int fieldId, int lane, int massSize)
