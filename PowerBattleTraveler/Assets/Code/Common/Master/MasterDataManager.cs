@@ -26,7 +26,7 @@ public class MasterDataManager : MonoBehaviour
         get
         {
             //　実体があるかどうか
-            if (instance == null)
+            if (!instance)
             {
                 //　実体がないので検索して登録
                 instance = GameObject.FindWithTag("MasterDataManager").GetComponent<MasterDataManager>();
@@ -57,7 +57,7 @@ public class MasterDataManager : MonoBehaviour
     private void OnDestroy()
     {
         // 破棄時に、登録した実体の解除を行う
-        if (this == Instance)
+        if (this == instance)
         {
             instance = null;
         }
