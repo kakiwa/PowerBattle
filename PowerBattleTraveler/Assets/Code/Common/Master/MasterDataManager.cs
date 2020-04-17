@@ -1,28 +1,27 @@
 ﻿using UnityEngine;
-using System.IO;
 
 namespace Common.Master
 {
-public class MasterDataLoader : MonoBehaviour
+public class MasterDataManager : MonoBehaviour
 {
     //------------------------------------------------------------------------------------//
     //　マスタ格納変数定義　：　新規追加のマスタがある場合ここに追加（定義はMasterDataDefine.csで行う）
     //------------------------------------------------------------------------------------//
 
     //　マス情報（レーン）
-    BreedFieldLaneMaster[] breedFieldLaneMaster = default;
+    BreedFieldLaneMaster breedFieldLaneMaster = default;
 
     //　マス情報（マス内部）
-    BreedFieldMassMaster[] breedFieldMassMaster = default;
+    BreedFieldMassMaster breedFieldMassMaster = default;
 
     //-----------------------------------------------------------------------//
     //　データ管理処理
     //-----------------------------------------------------------------------//
 
     // GameControllerインスタンスの実体
-    private static MasterDataLoader instance;
+    private static MasterDataManager instance;
     // GameControllerインスタンスのプロパティーは、実体が存在しないとき（＝初回参照時）実体を探して登録する
-    public static MasterDataLoader Instance
+    public static MasterDataManager Instance
     {
         get
         {
@@ -30,7 +29,7 @@ public class MasterDataLoader : MonoBehaviour
             if (instance == null)
             {
                 //　実体がないので検索して登録
-                instance = GameObject.FindWithTag("MasterDataLoader").GetComponent<MasterDataLoader>();
+                instance = GameObject.FindWithTag("MasterDataManager").GetComponent<MasterDataManager>();
             }
             return instance;
         }
@@ -74,7 +73,12 @@ public class MasterDataLoader : MonoBehaviour
     ///</summary>
     public void LoadMaster()
     {
-        GetBreedFieldLaneMaster();
+        breedFieldLaneMaster = new BreedFieldLaneMaster();
+        foreach(var data in breedFieldLaneMaster.Data)
+        {
+            Debug.Log(data.id.ToString());
+        }
+        
 
     }
 
@@ -87,8 +91,8 @@ public class MasterDataLoader : MonoBehaviour
         MasterCacheReset();
 
         //　各種マスタの取得処理
-        GetBreedFieldLaneMaster();
-        GetBreedFieldMassMaster();
+        breedFieldLaneMaster = new BreedFieldLaneMaster();
+        breedFieldMassMaster = new BreedFieldMassMaster();
     }
 
     ///<summary>
@@ -98,48 +102,6 @@ public class MasterDataLoader : MonoBehaviour
     {
         breedFieldLaneMaster = default;
         breedFieldMassMaster = default;
-    }
-
-    ///<summary>
-    ///　マス情報（レーン）マスタ取得
-    ///</summary>
-    void GetBreedFieldLaneMaster()
-    {
-        int i = 0, j;
-        TextAsset csv = Resources.Load("Master/BreedMode/breed_field_lane_mast") as TextAsset;
-        StringReader reader = new StringReader(csv.text);
-        breedFieldLaneMaster = new BreedFieldLaneMaster[reader.Peek()];
-        while (reader.Peek() > -1)
-        {
-            string line = reader.ReadLine();
-            string[] values = line.Split(',');
-            for (j = 0; j < values.Length; ++j)
-            {
-                breedFieldLaneMaster[i] = new BreedFieldLaneMaster(int.Parse(values[0]),int.Parse(values[1]),int.Parse(values[2]),int.Parse(values[3]));
-            }
-            ++i;
-        }
-    }
-
-    ///<summary>
-    ///　マス情報（マス内部）マスタ取得
-    ///</summary>
-    void GetBreedFieldMassMaster()
-    {
-        int i = 0, j;
-        TextAsset csv = Resources.Load("Master/BreedMode/breed_field_mass_mast") as TextAsset;
-        StringReader reader = new StringReader(csv.text);
-        breedFieldMassMaster = new BreedFieldMassMaster[reader.Peek()];
-        while (reader.Peek() > -1)
-        {
-            string line = reader.ReadLine();
-            string[] values = line.Split(',');
-            for (j = 0; j < values.Length; ++j)
-            {
-                breedFieldMassMaster[i] = new BreedFieldMassMaster(int.Parse(values[0]),int.Parse(values[1]),int.Parse(values[2]),values[3],values[4],int.Parse(values[5]),int.Parse(values[6]),int.Parse(values[7]),int.Parse(values[8]));              
-            }
-            ++i;
-        }
     }
 
 
