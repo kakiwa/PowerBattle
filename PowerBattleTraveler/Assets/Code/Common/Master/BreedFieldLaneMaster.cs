@@ -2,8 +2,7 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace Common.Master
-{
+namespace Common.Master {
 
 /// <summary>
 ///　マス情報（レーン）
@@ -45,7 +44,6 @@ public class BreedFieldLaneMaster
         public int lane { get; }
         //　マス数
         public int massSize { get; }
-
     }
 
     //　格納用変数

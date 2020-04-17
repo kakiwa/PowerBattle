@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
-namespace Common.Master
-{
+namespace Common.Master {
+
 public class MasterDataManager : MonoBehaviour
 {
     //------------------------------------------------------------------------------------//
@@ -20,6 +20,7 @@ public class MasterDataManager : MonoBehaviour
 
     // GameControllerインスタンスの実体
     private static MasterDataManager instance;
+    
     // GameControllerインスタンスのプロパティーは、実体が存在しないとき（＝初回参照時）実体を探して登録する
     public static MasterDataManager Instance
     {
@@ -38,6 +39,7 @@ public class MasterDataManager : MonoBehaviour
             instance = value;
         }
     }
+
     //初期化
     private void Awake()
     {
@@ -51,7 +53,6 @@ public class MasterDataManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
 
         LoadMaster();
-
     }
     //消える時の処理
     private void OnDestroy()
@@ -77,8 +78,6 @@ public class MasterDataManager : MonoBehaviour
         {
             Debug.Log(data.id.ToString());
         }
-        
-
     }
 
     ///<summary>
@@ -102,6 +101,5 @@ public class MasterDataManager : MonoBehaviour
         breedFieldLaneMaster = default;
         breedFieldMassMaster = default;
     }
-
 }
 }

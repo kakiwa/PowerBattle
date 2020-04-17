@@ -2,8 +2,8 @@
 using System.IO;
 using System.Collections.Generic;
 
-namespace Common.Master
-{
+namespace Common.Master {
+
 public class BreedFieldMassMaster
 {
     ///<summary>
@@ -20,9 +20,7 @@ public class BreedFieldMassMaster
             string[] values = line.Split(',');
             Data.Add(new BreedFieldMassMasterData(int.Parse(values[0]),int.Parse(values[1]),int.Parse(values[2]),values[3],values[4],int.Parse(values[5]),int.Parse(values[6]),int.Parse(values[7]),int.Parse(values[8])));
         }
-
     }
-
 
     /// <summary>
     ///　マス情報（マス内部）
@@ -60,12 +58,9 @@ public class BreedFieldMassMaster
         public int massDataRarely { get; }
         //　マス情報（マス表示画像ベース：０＝初期値、１＝草原、２＝荒野　現在は仮設定）
         public int massDataTextureMount { get; }
-
-
     }
 
     //　格納用変数
     public List<BreedFieldMassMasterData> Data { get; }
-
 }
 }
