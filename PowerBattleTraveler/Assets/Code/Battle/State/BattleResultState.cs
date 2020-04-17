@@ -7,19 +7,25 @@ namespace Battle {
 
 public partial class BattleStateManager
 {
-    private class ResultState : ImtStateMachine<BattleStateManager>.State
+/// <summary>
+/// 結果発表ステート
+/// </summary>
+private class ResultState : ImtStateMachine<BattleStateManager>.State
+{
+    protected override async void Enter()
     {
-        protected override async void Enter()
-        {
-            await ResultAsync();
-        }
-
-        private async UniTask ResultAsync()
-        {
-            Debug.Log("戦闘終了");
-            await UniTask.Delay(System.TimeSpan.FromSeconds(1));
-            Debug.Log("次のシーンへ");
-        }
+        await ResultAsync();
     }
+
+    /// <summary>
+    /// リザルトの演出
+    /// </summary>
+    private async UniTask ResultAsync()
+    {
+        Debug.Log("戦闘終了");
+        await UniTask.Delay(System.TimeSpan.FromSeconds(20));
+        Debug.Log("次のシーンへ");
+    }
+}
 }
 }// Battle

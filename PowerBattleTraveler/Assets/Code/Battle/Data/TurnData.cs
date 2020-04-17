@@ -11,7 +11,7 @@ public class TurnData
     /// <summary>
     /// ターン数
     /// </summary>
-    public int turnCount {set; get;} = 1;
+    public int turnCount {set; get;} = 0;
 
 }
 

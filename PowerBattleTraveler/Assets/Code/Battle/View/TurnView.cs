@@ -13,7 +13,7 @@ public class TurnView : MonoBehaviour
     [SerializeField]
     private Text m_TurnNum = default;
 
-    private void Start()
+    private void Awake()
     {
         // ターンを0にしとく
         m_TurnNum.text = 0.ToString();
@@ -22,7 +22,6 @@ public class TurnView : MonoBehaviour
     /// <summary>
     /// ターンをセット
     /// </summary>
-    /// <param name="turn"></param>
     public void SetTurn(int turn)
     {
         m_TurnNum.text = turn.ToString();

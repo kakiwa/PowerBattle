@@ -14,13 +14,13 @@ public struct ActorData{
     public ActorType ActorType {get;set;}
     public string Name {get;set;}
     public int Hp {get; set;}
+    public int MaxHp{get;set;}
     public int Attack {get;set;}
     public int Speed {get;set;}
-
+    public int Mp{get;set;}
+    public int MaxMp{get;set;}
 
     // TODO: リソースデータもここにおくa？
-
-
 }
 
 /// <summary>
@@ -46,13 +46,16 @@ public class BattleDataManager
             var data = new ActorData();
             data.ActorType = ActorType.PLAYER;
             data.Name = "味方" + i.ToString();
-            data.Hp = 5;
+            data.MaxHp = 456;
+            data.Hp = data.MaxHp;
             data.Speed = 2;
             data.Attack = 1;
+            data.MaxMp = 123456;
+            data.Mp = data.MaxHp;
             Actors.Add(i, data);
         }
         const uint enStartNum = plNum + 1;
-        for (uint i = enStartNum; i <= plNum + 3 ; ++i)
+        for (uint i = enStartNum; i <= enStartNum ; ++i)
         {
             var data = new ActorData();
             data.ActorType = ActorType.ENEMY;
@@ -63,9 +66,8 @@ public class BattleDataManager
             Actors.Add(i, data);
         }
 
-        
+        await UniTask.Yield();
     }
-
 }
 
 } // Battle

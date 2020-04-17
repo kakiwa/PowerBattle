@@ -25,16 +25,12 @@ public class BattleCommand : MonoBehaviour
         m_Text.text = name;
     }
     
-    public async UniTask OnSelected(CancellationToken token, BattleMenuView parent)
+    public async UniTask<string> OnSelected(CancellationToken token, BattleMenuView parent)
     {
         // クリックされるまでまつ
         await m_Button.OnClickAsync(token);
 
-        ExecuteEvents.Execute<ICommand>(
-            parent.gameObject,
-            null,
-            (x,data)=>x.Battle()
-        );
+        return m_Text.text;
     }
 }
 } // Battle

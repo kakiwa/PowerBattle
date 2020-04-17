@@ -13,13 +13,13 @@ public class ActorsRootView : MonoBehaviour
 {
 
     [SerializeField]
-    private  GameObject actorPrefab;
+    private  GameObject actorPrefab = default;
 
     [SerializeField]
-    private Transform playerActorsRoot;
+    private Transform playerActorsRoot = default;
 
     [SerializeField]
-    private Transform enemyActorsRoot;
+    private Transform enemyActorsRoot = default;
 
 
     private Dictionary<uint, ActorView> actorViews = new Dictionary<uint, ActorView>();
@@ -29,16 +29,17 @@ public class ActorsRootView : MonoBehaviour
     /// </summary>
     /// <param name="actorData"></param>
     public void AddActor(KeyValuePair<uint, ActorData> actorData) {
+        // インスタンス生成
         var obj = Instantiate(
             actorPrefab,
-            actorData.Value.ActorType == ActorType.PLAYER ? playerActorsRoot: enemyActorsRoot
+            actorData.Value.ActorType == ActorType.PLAYER ? playerActorsRoot : enemyActorsRoot
         );
+        // 各種設定
         var actor = obj.GetComponent<ActorView>();
         actor.setCo (
-        actorData.Value.ActorType == ActorType.PLAYER ? Color.green : Color.red ); 
-        actor.setName(actorData.Value.Name);
-        actor.setHp(actorData.Value.Hp);
-        actor.setAttack(actorData.Value.Attack);
+            actorData.Value.ActorType == ActorType.PLAYER ? Color.green : Color.red
+        );
+        // リストに追加
         actorViews.Add(actorData.Key, actor);
     }
 
