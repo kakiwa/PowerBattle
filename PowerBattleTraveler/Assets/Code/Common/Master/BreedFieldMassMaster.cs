@@ -67,9 +67,5 @@ public class BreedFieldMassMaster
     //　格納用変数
     public List<BreedFieldMassMasterData> Data { get; }
 
-
-
-        
-
 }
 }
