@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using IceMilkTea.Core;
 using UniRx.Async;
@@ -72,6 +73,9 @@ public partial class BattleStateManager : MonoBehaviour
     {
         m_StateMachine.Update();
     }
-}
 
+    private void OnDestroy()
+    {
+    }
+}
 } // Battle

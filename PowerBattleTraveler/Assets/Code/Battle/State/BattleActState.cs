@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using IceMilkTea.Core;
 using UniRx.Async;
+using System;
 
 namespace Battle {
 public partial class BattleStateManager {
@@ -41,6 +42,11 @@ private class ActState : ImtStateMachine<BattleStateManager>.State
         // 行動終了
         Context.m_ActionList.Remove(m_Action);
         Context.m_StateMachine.SendEvent((int)StateEventType.END_ACT);
+    }
+
+    protected override void Update()
+    {
+        // todo:選択キャンセル
     }
 
     protected override void Exit()

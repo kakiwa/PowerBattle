@@ -5,18 +5,19 @@ using UnityEngine.UI;
 using UniRx.Async;
 
 namespace Battle {
+
 /// <summary>
 /// バトルの表示を各ビューに伝える
 /// </summary>
 public class BattleViewManager : MonoBehaviour
 {
-
     [SerializeField] private TurnRootView m_TurnRootView = default;     //< ターンのビュー
 
-    [SerializeField] private Transform m_BattleMenuRoot = default;      //< 戦闘コマンドメニューのルートオブジェ
-
-    [SerializeField] private GameObject m_BattleMenuPrefab = default;    //< 戦闘コマンドプレファブ
-    private BattleMenuView m_BattleMenu = default;      //< 戦闘メニュー
+    [SerializeField] private BattleMenuRootView m_BattleMenuRootView = default;      //< 戦闘メニュー
+    /// <summary>
+    /// バトルコマンドメニュー取得
+    /// </summary>
+    public BattleMenuView GetBattleMenu() { return m_BattleMenuRootView.BattleMenu; }
 
     [SerializeField] private BattleAllyInfoRootView m_BattleAllyInfoRootView = default;  //< 味方のビュー
 
@@ -24,16 +25,18 @@ public class BattleViewManager : MonoBehaviour
 
     public ActorsRootView GetActorsView() {return m_ActorsRootView;}
 
+    /// <summary>
+    /// Viewの初期化
+    /// </summary>
     public async UniTask SetupView(BattleDataManager battleData)
     {
         await UniTask.Yield();
 
-        // 戦闘メニューの初期化生成とキャッシュ
-        var obj = Instantiate(m_BattleMenuPrefab, m_BattleMenuRoot);
-        m_BattleMenu = obj.GetComponent<BattleMenuView>();
+        // バトルメニュー
+        m_BattleMenuRootView.SetupView();
 
         // キャラのView初期化
-        foreach ( var actor in battleData.Actors)
+        foreach (var actor in battleData.Actors)
         {
             Debug.Log(actor.Key);
             m_ActorsRootView.AddActor(actor);
@@ -47,14 +50,15 @@ public class BattleViewManager : MonoBehaviour
         m_TurnRootView.SetupView();
     }
 
-    public async UniTask CommandAsync()
-    {
-        Debug.Log("行動選択開始");
 
-        var ret = await m_BattleMenu.OnBattleMenuSelected();
 
-        Debug.Log("行動選択終了");
-    }
+
+
+
+
+
+
+
 
     public async UniTask AnimationAsync()
     {
@@ -76,5 +80,4 @@ public class BattleViewManager : MonoBehaviour
         m_TurnRootView.SetTurn(turn);
     }
 }
-
 } // Battle

@@ -35,7 +35,9 @@ private class TurnStartState : ImtStateMachine<BattleStateManager>.State
     }
 
     private async UniTask TurnStart() {
-        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        await UniTask.Delay(
+            TimeSpan.FromSeconds(3)
+        );
     }
 
     protected override void Exit()

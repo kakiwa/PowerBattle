@@ -1,8 +1,9 @@
 ﻿namespace Battle {
     public enum BattleCommandType : int
     {
+        DEFAULT,
         ATTACK,
-        SPECIAL,
+        DEFENCE,
         ITEM,
         ESCAPE,
     }

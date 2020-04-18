@@ -6,6 +6,8 @@ using UnityEngine.UI;
 using UniRx.Async;
 using UniRx.Async.Triggers;
 
+using d = System.Collections.Generic.KeyValuePair<string, Battle.BattleCommandType>;
+
 namespace Battle {
 
 /// <summary>
@@ -13,26 +15,12 @@ namespace Battle {
 /// </summary>
 public class BattleMenuView : MonoBehaviour
 {
-    [SerializeField]
-    private Transform m_CommandRoot = default;      //< 戦闘コマンドはこの下にくっつけてゆく
+    [SerializeField] private Transform m_CommandRoot = default;      //< 戦闘コマンドはこの下にくっつけてゆく
 
-    [SerializeField]
-    private GameObject m_CommandPrefab = default;   //< 戦闘コマンドのプレファブ
+    [SerializeField] private GameObject m_CommandPrefab = default;   //< 戦闘コマンドのプレファブ
 
     private void Awake()
     {
-        // どっかからデータ持ってくる
-        List<string> commandDataList = new List<string>();
-        commandDataList.Add("攻撃");
-        commandDataList.Add("農業");
-        commandDataList.Add("アイテム");
-        commandDataList.Add("逃げる");
-
-        foreach (var it in commandDataList)
-        {
-            var obj = Instantiate(m_CommandPrefab, m_CommandRoot);
-            obj.GetComponent<BattleCommand>().SetName(it);
-        }
         this.gameObject.SetActive(false);
     }
 
@@ -45,44 +33,64 @@ public class BattleMenuView : MonoBehaviour
     }
 
     /// <summary>
+    /// コマンドメニュー用意
+    /// </summary>
+    public void SetupCommandList() {
+        // TODO: どっかからデータ持ってくる
+        var commandDataList = new List<d>();
+        commandDataList.Add(new d("攻撃", BattleCommandType.ATTACK));
+        commandDataList.Add(new d("農業", BattleCommandType.DEFENCE));
+        commandDataList.Add(new d("アイテム", BattleCommandType.ITEM));
+        commandDataList.Add(new d("逃げる", BattleCommandType.ESCAPE));
+
+        foreach (var it in commandDataList)
+        {
+            var obj = Instantiate(m_CommandPrefab, m_CommandRoot);
+            var command = obj.GetComponent<BattleCommand>();
+            command.SetName(it.Key);
+            command.SetCommand(it.Value);
+        }
+
+        // todo: 各項目のサブメニュー用意
+
+
+
+    }
+
+    /// <summary>
+    /// コマンドリストのクリア
+    /// </summary>
+    public void ClearCommandList() {
+        foreach (Transform t in m_CommandRoot) {
+            Destroy(t.gameObject);
+        }
+
+        m_CommandRoot.DetachChildren();
+    }
+
+    /// <summary>
     /// 選択された項目を返す
     /// </summary>
-    public async UniTask<int> OnBattleMenuSelected()
+    public async UniTask<BattleCommandType> OnBattleMenuSelected()
     {
-        await UniTask.Yield();
+        // 一つのボタンが押されたら全てのタスクを止めるためにトークン生成
+        var cts = new CancellationTokenSource();
 
-        // メニューを開く
-        SetEnable(true);
-
-        // コマンドのリストを取得
-        var comList = m_CommandRoot.GetComponentsInChildren<BattleCommand>();
-        List<UniTask<string>> list = new List<UniTask<string>>();
-
-        // 一つのボタンが押されたら全てのタスクを止める
-        CancellationTokenSource cts = new CancellationTokenSource();
-
-        // タスクを抽出して登録
-        foreach (var it in comList)
+        // コマンドのリストからタスクを抽出して登録
+        var commandList = m_CommandRoot.GetComponentsInChildren<BattleCommand>();
+        var tasks = new List<UniTask<BattleCommandType>>();
+        foreach (var command in commandList)
         {
-            list.Add(it.OnSelected(cts.Token, this));
+            tasks.Add(command.OnSelected(cts.Token, this));
         }
 
         // ボタンイベント待つ
-        var ret = await UniTask.WhenAny(list.ToArray());
+        var result = await UniTask.WhenAny(tasks.ToArray());
 
         // 押されたボタン以外のタスクをキャンセル
         cts.Cancel();
 
-        Debug.Log("選択コマンド:" + ret.result);
-        if (ret.winArgumentIndex == 0) {
-            // なんだここ
-        }
-
-        // メニューを閉じる
-        SetEnable(false);
-
-        return 0;
+        return result.result;
     }
 }
-
 } // Battle

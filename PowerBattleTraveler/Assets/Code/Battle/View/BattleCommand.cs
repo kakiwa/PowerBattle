@@ -20,17 +20,30 @@ public class BattleCommand : MonoBehaviour
     [SerializeField]
     private Text m_Text = default;
 
+    private BattleCommandType m_CommandType = default;
+
+    // コマンド名セット
     public void SetName(string name)
     {
         m_Text.text = name;
     }
+
+    // コマンドの種類セット
+    public void SetCommand(BattleCommandType commandType)
+    {
+        m_CommandType = commandType;
+    }
     
-    public async UniTask<string> OnSelected(CancellationToken token, BattleMenuView parent)
+    public async UniTask<BattleCommandType> OnSelected(CancellationToken token, BattleMenuView parent)
     {
         // クリックされるまでまつ
         await m_Button.OnClickAsync(token);
 
-        return m_Text.text;
+        return m_CommandType;
+    }
+
+    void OnDestroy()
+    {
     }
 }
 } // Battle

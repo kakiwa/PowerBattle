@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UniRx.Async;
 
 namespace Battle {
+
 public enum ActorType
 {
     DEFAULT,
@@ -30,6 +31,12 @@ public class BattleDataManager
 {
     public TurnData TurnData = new TurnData();
 
+    /// <summary>
+    /// インゲームの画面に出ている奴らのデータ
+    /// </summary>
+    /// <typeparam name="uint">アクターID</typeparam>
+    /// <typeparam name="ActorData">データ</typeparam>
+    /// <returns></returns>
     public Dictionary<uint, ActorData> Actors = new Dictionary<uint, ActorData>();
 
     /// <summary>
@@ -49,7 +56,7 @@ public class BattleDataManager
             data.MaxHp = 456;
             data.Hp = data.MaxHp;
             data.Speed = 2;
-            data.Attack = 1;
+            data.Attack = 3;
             data.MaxMp = 123456;
             data.Mp = data.MaxHp;
             Actors.Add(i, data);
@@ -69,5 +76,4 @@ public class BattleDataManager
         await UniTask.Yield();
     }
 }
-
 } // Battle

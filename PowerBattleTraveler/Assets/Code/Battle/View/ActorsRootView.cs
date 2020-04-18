@@ -17,12 +17,30 @@ public class ActorsRootView : MonoBehaviour
 
     [SerializeField]
     private Transform playerActorsRoot = default;
+    
 
     [SerializeField]
     private Transform enemyActorsRoot = default;
 
+    /// <summary>
+    /// インゲームの画面に出ている奴らのビュー
+    /// </summary>
+    /// <typeparam name="uint">アクターID</typeparam>
+    /// <typeparam name="ActorView">ビュー</typeparam>
+    /// <returns></returns>
+    private Dictionary<uint, ActorView> m_ActorViews = new Dictionary<uint, ActorView>();
 
-    private Dictionary<uint, ActorView> actorViews = new Dictionary<uint, ActorView>();
+    public Dictionary<uint, ActorView> ActorViews
+    {
+        get
+        {
+            return this.m_ActorViews;
+        }
+        private set
+        {
+            this.m_ActorViews = value;
+        }
+    }
 
     /// <summary>
     /// アクターを追加
@@ -39,13 +57,16 @@ public class ActorsRootView : MonoBehaviour
         actor.setCo (
             actorData.Value.ActorType == ActorType.PLAYER ? Color.green : Color.red
         );
+        // タッチ要素にID登録
+        var touchable = obj.GetComponent<TouchableElement>();
+        touchable.setId(actorData.Key);
         // リストに追加
-        actorViews.Add(actorData.Key, actor);
+        m_ActorViews.Add(actorData.Key, actor);
     }
 
     public ActorView GetActorData(uint actorId)
     {
-        return actorViews[actorId];
+        return m_ActorViews[actorId];
     }
 }
 
