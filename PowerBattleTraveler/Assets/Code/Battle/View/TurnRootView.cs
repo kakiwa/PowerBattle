@@ -27,5 +27,4 @@ public class TurnRootView : MonoBehaviour
         m_TurnView.SetTurn(turn);
     }
 }
-
 } // Battle
