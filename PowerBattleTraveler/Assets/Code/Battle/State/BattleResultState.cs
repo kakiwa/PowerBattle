@@ -23,7 +23,7 @@ private class ResultState : ImtStateMachine<BattleStateManager>.State
     private async UniTask ResultAsync()
     {
         Debug.Log("戦闘終了");
-        await UniTask.Delay(System.TimeSpan.FromSeconds(20));
+        await Context.m_ViewManager.StartEnd().EndAnim();
         Debug.Log("次のシーンへ");
     }
 }

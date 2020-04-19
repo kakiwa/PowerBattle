@@ -60,8 +60,10 @@ public class BattleMenuView : MonoBehaviour
     /// <summary>
     /// コマンドリストのクリア
     /// </summary>
-    public void ClearCommandList() {
-        foreach (Transform t in m_CommandRoot) {
+    public void ClearCommandList() 
+    {
+        foreach (Transform t in m_CommandRoot)
+        {
             Destroy(t.gameObject);
         }
 

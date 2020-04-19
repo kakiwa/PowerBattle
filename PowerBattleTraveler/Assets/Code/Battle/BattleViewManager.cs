@@ -11,43 +11,69 @@ namespace Battle {
 /// </summary>
 public class BattleViewManager : MonoBehaviour
 {
-    [SerializeField] private TurnRootView m_TurnRootView = default;     //< ターンのビュー
-
-    [SerializeField] private BattleMenuRootView m_BattleMenuRootView = default;      //< 戦闘メニュー
     /// <summary>
-    /// バトルコマンドメニュー取得
+    /// ターン表示
     /// </summary>
+    [SerializeField] private TurnRootView m_TurnRootView = default;
+    
+    /// <summary>
+    /// バトルの開始終了
+    /// </summary>
+    [SerializeField] private StartEndRootView m_StartEndRootView = default;
+    public StartEndRootView StartEnd() { return m_StartEndRootView;}
+
+    /// <summary>
+    /// バトルコマンドメニュー
+    /// </summary>
+    [SerializeField] private BattleMenuRootView m_BattleMenuRootView = default;
     public BattleMenuView GetBattleMenu() { return m_BattleMenuRootView.BattleMenu; }
 
-    [SerializeField] private BattleAllyInfoRootView m_BattleAllyInfoRootView = default;  //< 味方のビュー
+    /// <summary>
+    /// 味方情報
+    /// </summary>
+    [SerializeField] private BattleAllyInfoRootView m_BattleAllyInfoRootView = default;
 
-    [SerializeField] private ActorsRootView m_ActorsRootView = default;  //< キャラクターのビュー
+    /// <summary>
+    /// 行動リスト
+    /// </summary>
+    [SerializeField] private ActionTimelineRootView m_ActionTimelineRootView = default;
 
-    public ActorsRootView GetActorsView() {return m_ActorsRootView;}
+    /// <summary>
+    /// アクターリスト
+    /// </summary>
+    [SerializeField] private ActorsRootView m_ActorsRootView = default;
+    public ActorsRootView GetActorsView() { return m_ActorsRootView; }
 
     /// <summary>
     /// Viewの初期化
     /// </summary>
-    public async UniTask SetupView(BattleDataManager battleData)
+    public void SetupView(BattleDataManager battleData)
     {
-        await UniTask.Yield();
-
-        // バトルメニュー
-        m_BattleMenuRootView.SetupView();
-
         // キャラのView初期化
         foreach (var actor in battleData.Actors)
         {
             Debug.Log(actor.Key);
+            // アクターの3Dデータ追加
             m_ActorsRootView.AddActor(actor);
             
-            if (actor.Value.ActorType == ActorType.PLAYER) {
+            // 味方のみUI追加
+            if (actor.Value.ActorType == ActorType.PLAYER)
+            {
                 m_BattleAllyInfoRootView.AddAlly(actor);
             }
         }
-
         // ターン表記の初期化
         m_TurnRootView.SetupView();
+
+        // バトルの開始終了
+        m_StartEndRootView.SetupView();
+
+        // バトルメニュー
+        m_BattleMenuRootView.SetupView();
+
+        // 行動リスト
+        m_ActionTimelineRootView.SetupView();
+
     }
 
 

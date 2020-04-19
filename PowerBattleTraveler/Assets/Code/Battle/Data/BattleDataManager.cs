@@ -42,7 +42,7 @@ public class BattleDataManager
     /// <summary>
     /// バトルをするのに必要なデータをキャッシュ
     /// </summary>
-    public async UniTask SetupBattleData(
+    public void SetupBattleData(
         int someData
     )
     {
@@ -72,8 +72,6 @@ public class BattleDataManager
             data.Attack = 1;
             Actors.Add(i, data);
         }
-
-        await UniTask.Yield();
     }
 }
 } // Battle

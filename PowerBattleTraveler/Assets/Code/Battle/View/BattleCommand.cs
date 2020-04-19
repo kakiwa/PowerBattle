@@ -41,9 +41,5 @@ public class BattleCommand : MonoBehaviour
 
         return m_CommandType;
     }
-
-    void OnDestroy()
-    {
-    }
 }
 } // Battle

@@ -12,7 +12,7 @@ public class PlayerAction : IAction
     /// <summary>
     /// コンストラクタ
     /// </summary>
-    /// <param name="ownId">キャラクターID</param>
+    /// <param name="ownId">アクターID</param>
     public PlayerAction(uint ownId)
     {
         this.ownId = ownId;
