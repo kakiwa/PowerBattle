@@ -36,10 +36,26 @@ public class StartEndRootView : MonoBehaviour
     {
         await UniTask.Yield();
         m_StartEnd.GetComponent<Text>().text = "ばとるしゅりょー";
-        
+
         m_StartEnd.SetActive(true);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        var tasks = new List<UniTask>();
+
+        // tasks.Add(
+        //     () =>
+        //         return UniTask();
+        // );
+
+        // tasks.Add(
+        //     UniTask.WaitUntil(
+        //         () =>
+        //             m_StartEnd.GetComponent<Text>().color.a == 0
+        //     )
+        // );
+
+        tasks.Add(UniTask.Delay(TimeSpan.FromSeconds(1)));
+
+        await UniTask.WhenAll(tasks);
 
         m_StartEnd.SetActive(false);
     }
