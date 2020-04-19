@@ -22,7 +22,6 @@ public class BattleAllyInfoRootView : MonoBehaviour
 
         var allyInfo = obj.GetComponent<BattleAllyInfoView>();
         allyInfo.setHp(actorData.Value.Hp);
-        // allyInfo.
     }
 }
 } //Battle

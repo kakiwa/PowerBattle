@@ -16,14 +16,8 @@ public class BattleMenuRootView : MonoBehaviour
     /// </summary>
     public BattleMenuView BattleMenu
     {
-        get
-        {
-            return this.m_BattleMenu;
-        }
-        private set 
-        {
-            this.m_BattleMenu = value;
-        }
+        get => this.m_BattleMenu;
+        private set => this.m_BattleMenu = value;
     }
     private BattleMenuView m_BattleMenu = default;
 
@@ -33,7 +27,7 @@ public class BattleMenuRootView : MonoBehaviour
     public void SetupView() 
     {
         var obj = Instantiate(m_BattleMenuPrefab, this.transform);
-        m_BattleMenu = obj.GetComponent<BattleMenuView>();
+        BattleMenu = obj.GetComponent<BattleMenuView>();
     }
 }
 }

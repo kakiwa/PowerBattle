@@ -36,11 +36,7 @@ private class ActState : ImtStateMachine<BattleStateManager>.State
         // 行動反映
         await m_Action.ActionAsync(Context.m_BattleDataManager, Context.m_ViewManager);
 
-        // 次の行動リストに追加
-        Context.m_NextActionList.Add(m_Action);
-
         // 行動終了
-        Context.m_ActionList.Remove(m_Action);
         Context.m_StateMachine.SendEvent((int)StateEventType.END_ACT);
     }
 
@@ -51,6 +47,7 @@ private class ActState : ImtStateMachine<BattleStateManager>.State
 
     protected override void Exit()
     {
+
     }
 }
 }

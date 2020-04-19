@@ -64,6 +64,9 @@ public class ActorsRootView : MonoBehaviour
         m_ActorViews.Add(actorData.Key, actor);
     }
 
+    /// <summary>
+    /// アクタービュー取得
+    /// </summary>
     public ActorView GetActorData(uint actorId)
     {
         return m_ActorViews[actorId];
