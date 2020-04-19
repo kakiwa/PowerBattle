@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UniRx.Async;
+using DG.Tweening;
+using Common;
 
 namespace Battle {
 
@@ -22,12 +24,35 @@ public class StartEndRootView : MonoBehaviour
         m_StartEnd.SetActive(false);
     }
 
+    /// <summary>
+    /// 戦闘開始演出
+    /// </summary>
+    /// <returns></returns>
     public async UniTask StartAnim()
     {
         await UniTask.Yield();
         m_StartEnd.SetActive(true);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        var tasks = new List<UniTask>();
+        await DOTween.ToAlpha(
+                ()=> m_StartEnd.GetComponent<Text>().color,
+                color => m_StartEnd.GetComponent<Text>().color = color,
+            0.0f,
+            0.0f);
+
+        await DOTween.ToAlpha(
+                ()=> m_StartEnd.GetComponent<Text>().color,
+                color => m_StartEnd.GetComponent<Text>().color = color,
+            1.0f,
+            1.0f);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+        await DOTween.ToAlpha(
+                ()=> m_StartEnd.GetComponent<Text>().color,
+                color => m_StartEnd.GetComponent<Text>().color = color,
+            0.0f,
+            1.0f);
 
         m_StartEnd.SetActive(false);
     }
@@ -39,23 +64,7 @@ public class StartEndRootView : MonoBehaviour
 
         m_StartEnd.SetActive(true);
 
-        var tasks = new List<UniTask>();
-
-        // tasks.Add(
-        //     () =>
-        //         return UniTask();
-        // );
-
-        // tasks.Add(
-        //     UniTask.WaitUntil(
-        //         () =>
-        //             m_StartEnd.GetComponent<Text>().color.a == 0
-        //     )
-        // );
-
-        tasks.Add(UniTask.Delay(TimeSpan.FromSeconds(1)));
-
-        await UniTask.WhenAll(tasks);
+        await UniTask.Delay(TimeSpan.FromSeconds(1));
 
         m_StartEnd.SetActive(false);
     }
