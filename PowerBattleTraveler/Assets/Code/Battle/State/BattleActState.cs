@@ -1,9 +1,7 @@
 ﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using IceMilkTea.Core;
 using UniRx.Async;
-using System;
 
 namespace Battle {
 public partial class BattleStateManager {
@@ -47,7 +45,6 @@ private class ActState : ImtStateMachine<BattleStateManager>.State
 
     protected override void Exit()
     {
-
     }
 }
 }
