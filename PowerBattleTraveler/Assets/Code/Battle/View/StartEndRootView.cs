@@ -32,8 +32,6 @@ public class StartEndRootView : MonoBehaviour
     {
         await UniTask.Yield();
         m_StartEnd.SetActive(true);
-
-        var tasks = new List<UniTask>();
         await DOTween.ToAlpha(
                 ()=> m_StartEnd.GetComponent<Text>().color,
                 color => m_StartEnd.GetComponent<Text>().color = color,
@@ -64,7 +62,25 @@ public class StartEndRootView : MonoBehaviour
 
         m_StartEnd.SetActive(true);
 
-        await UniTask.Delay(TimeSpan.FromSeconds(1));
+        await DOTween.ToAlpha(
+                ()=> m_StartEnd.GetComponent<Text>().color,
+                color => m_StartEnd.GetComponent<Text>().color = color,
+            0.0f,
+            0.0f);
+
+        await DOTween.ToAlpha(
+                ()=> m_StartEnd.GetComponent<Text>().color,
+                color => m_StartEnd.GetComponent<Text>().color = color,
+            1.0f,
+            1.0f);
+
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
+
+        await DOTween.ToAlpha(
+                ()=> m_StartEnd.GetComponent<Text>().color,
+                color => m_StartEnd.GetComponent<Text>().color = color,
+            0.0f,
+            1.0f);
 
         m_StartEnd.SetActive(false);
     }

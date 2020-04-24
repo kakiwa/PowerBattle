@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 using UniRx.Async;
+using DG.Tweening;
+using Common;
 
 namespace Battle {
 public class EnemyDiside : IAction
@@ -28,14 +30,11 @@ public class EnemyDiside : IAction
 
     public async UniTask ActionAsync(BattleDataManager dataManager, BattleViewManager viewManager)
     {
-        // var acView = viewManager.GetActorsView().GetActorData(targetId);
-        // acView.setHp(dataManager.Actors[targetId].Hp);
+        var t = viewManager.GetActorsView().ActorViews[ownId].transform;
+        var pxpos = t.position.x;
+        await t.DOMoveX(pxpos - 1.0f, 1.0f);
 
-        // if (dataManager.Actors[targetId].Hp <= 0) {
-        //     acView.gameObject.SetActive(false);
-        // }
-
-        await viewManager.AnimationAsync();
+        await t.DOMoveX(pxpos, 1.0f);
 
     }
 

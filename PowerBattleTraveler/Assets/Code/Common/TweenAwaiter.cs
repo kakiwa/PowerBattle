@@ -1,7 +1,9 @@
-﻿using DG.Tweening;
-using UniRx.Async;
+﻿using UniRx.Async;
 
-namespace Common {
+/// <summary>
+/// いちいちCommonと一緒にusingするのめんどいのでTweenのnamespaceに突っ込みます
+/// </summary>
+namespace DG.Tweening {
 
 /// <summary>
 /// トゥイーンをawaitできるようにする拡張クラス

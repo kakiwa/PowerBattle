@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UniRx.Async;
+using DG.Tweening;
 
 namespace Battle {
 
@@ -43,6 +45,15 @@ public class ActionTimelineRootView : MonoBehaviour
 
         // var obj2 = Instantiate(m_ActionTimelinePrefab, m_NextActionTimelineRoot);
         // NextActionTimeline = obj2.GetComponent<ActionTimelineView>();
+    }
+
+    /// <summary>
+    /// 開始時のアニメーション
+    /// </summary>
+    /// <returns></returns>
+    public async UniTask StartAnim()
+    {
+        
     }
 }
 } // Battle

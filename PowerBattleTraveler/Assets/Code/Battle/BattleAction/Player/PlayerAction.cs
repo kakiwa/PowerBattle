@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UniRx.Async;
+using DG.Tweening;
+using Common;
 
 namespace Battle {
 
@@ -46,7 +48,11 @@ public class PlayerAction : IAction
 
     public async UniTask ActionAsync(BattleDataManager dataManager, BattleViewManager viewManager)
     {
-        await viewManager.AnimationAsync();
+        var t = viewManager.GetActorsView().ActorViews[ownId].transform;
+        var pxpos = t.position.x;
+        await t.DOMoveX(pxpos + 1.0f, 1.0f);
+
+        await t.DOMoveX(pxpos, 1.0f);
     }
 
     public void Calc(BattleDataManager dataManager)
