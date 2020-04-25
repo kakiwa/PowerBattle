@@ -42,6 +42,7 @@ private class EndCheckState : ImtStateMachine<BattleStateManager>.State
         Debug.Log("行動リスト数:" + Context.m_ActionList.Count);
         // ターン切り替えチェック
         if (Context.m_ActionList.Count == 0) {
+            TurnEnd();
             nextState = StateEventType.TURN_START;
         }
 
@@ -58,17 +59,21 @@ private class EndCheckState : ImtStateMachine<BattleStateManager>.State
     /// <returns></returns>
     private async UniTask ActionListUpdate()
     {
-        
         var action = Context.m_ActionList.First();
-        Context.m_NextActionList.Add(action);
+        // Context.m_NextActionList.Add(action);
         Context.m_ActionList.Remove(action);
         // 行動リストの一つ目をけす
 
 
         // 行動リストをずらす
 
-        // 
+        //
         await UniTask.Yield();
+    }
+
+    private void TurnEnd()
+    {
+        Context.m_ViewManager.ActionTimeline.ResetElementsAlpha();
     }
 }
 

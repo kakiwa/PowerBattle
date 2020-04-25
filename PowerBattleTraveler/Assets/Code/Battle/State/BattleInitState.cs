@@ -30,21 +30,10 @@ private class InitState : ImtStateMachine<BattleStateManager>.State
         Debug.Log("初期化終了");
     }
 
-
     private void Setup()
     {
         // バトルのデータ初期化
         Context.m_BattleDataManager.SetupBattleData(0);
-
-        // 最初の行動順を決定
-        var actors = Context.m_BattleDataManager.Actors;
-        foreach (var it in actors)
-        {
-            IAction actionCommand = it.Value.ActorType == ActorType.PLAYER ?
-                (IAction)new PlayerAction(it.Key) :
-                (IAction)new EnemyDiside(it.Key) ;
-            Context.m_NextActionList.Add(actionCommand);
-        }
 
         // ビューの初期化
         Context.m_ViewManager.SetupView(Context.m_BattleDataManager);
@@ -60,12 +49,18 @@ private class InitState : ImtStateMachine<BattleStateManager>.State
         List<UniTask> tasks = new List<UniTask>();
 
         // バトル開始演出
-        tasks.Add(Context.m_ViewManager.StartEnd().StartAnim());
+        tasks.Add(Context.m_ViewManager.StartEnd.StartAnim());
 
         // 行動リスト開始演出
+        tasks.Add(Context.m_ViewManager.ActionTimelineRootView.StartAnim());
+
+        // 味方情報開始演出
+
 
         // アクター開始演出
 
+
+        // 登録した演出を全部やる
         await UniTask.WhenAll(tasks);
     }
 

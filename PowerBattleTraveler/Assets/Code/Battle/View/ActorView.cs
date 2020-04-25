@@ -8,7 +8,7 @@ public class ActorView : MonoBehaviour
 {
 
     public void setCo(Color col) {
-        
+
     }
 
 }

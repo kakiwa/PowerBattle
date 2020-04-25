@@ -26,18 +26,6 @@ public class EnemyDiside : IAction
         targetId = 1;
     }
 
-
-
-    public async UniTask ActionAsync(BattleDataManager dataManager, BattleViewManager viewManager)
-    {
-        var t = viewManager.GetActorsView().ActorViews[ownId].transform;
-        var pxpos = t.position.x;
-        await t.DOMoveX(pxpos - 1.0f, 1.0f);
-
-        await t.DOMoveX(pxpos, 1.0f);
-
-    }
-
     public void Calc( BattleDataManager dataManager)
     {
         var targetData = dataManager.Actors[targetId];
@@ -46,5 +34,26 @@ public class EnemyDiside : IAction
         // リストに戻す
         dataManager.Actors[targetId] = targetData;
     }
+
+
+
+#region Animations
+
+    public async UniTask ActionAsync(BattleDataManager dataManager, BattleViewManager viewManager)
+    {
+        var ownTransform = viewManager.ActorsRootView.ActorViews[ownId].transform;
+        var pos = ownTransform.position.x;
+        // 前に
+        await ownTransform.DOMoveX(pos - 1.0f, 0.5f).SetEase(Ease.InQuart);
+
+        // ぐわぁ
+        var targetTransform = viewManager.ActorsRootView.ActorViews[targetId].transform;
+        await targetTransform.DOShakePosition(0.5f).SetEase(Ease.InQuart);
+
+        // もどる
+        await ownTransform.DOMoveX(pos, 0.5f).SetEase(Ease.InQuart);
+    }
+
+#endregion Animations
 }
 } // Battle

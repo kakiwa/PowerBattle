@@ -23,7 +23,7 @@ public class TargetSelector
     /// </summary>
     public void SetupTarget(BattleViewManager viewManager)
     {
-        var actors = viewManager.GetActorsView().ActorViews;
+        var actors = viewManager.ActorsRootView.ActorViews;
         foreach (var actor in actors) {
             var touchableElement = actor.Value.GetComponent<TouchableElement>();
             m_TargetList.Add(touchableElement);
