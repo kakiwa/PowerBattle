@@ -17,7 +17,6 @@ public class ActorsRootView : MonoBehaviour
 
     [SerializeField]
     private Transform playerActorsRoot = default;
-    
 
     [SerializeField]
     private Transform enemyActorsRoot = default;
@@ -25,9 +24,6 @@ public class ActorsRootView : MonoBehaviour
     /// <summary>
     /// インゲームの画面に出ている奴らのビュー
     /// </summary>
-    /// <typeparam name="uint">アクターID</typeparam>
-    /// <typeparam name="ActorView">ビュー</typeparam>
-    /// <returns></returns>
     private Dictionary<uint, ActorView> m_ActorViews = new Dictionary<uint, ActorView>();
 
     public Dictionary<uint, ActorView> ActorViews
@@ -45,13 +41,16 @@ public class ActorsRootView : MonoBehaviour
     /// <summary>
     /// アクターを追加
     /// </summary>
-    /// <param name="actorData"></param>
     public void AddActor(KeyValuePair<uint, ActorData> actorData) {
         // インスタンス生成
         var obj = Instantiate(
             actorPrefab,
             actorData.Value.ActorType == ActorType.PLAYER ? playerActorsRoot : enemyActorsRoot
         );
+
+        // TODO:いい感じに座標設定したい
+
+
         // 各種設定
         var actor = obj.GetComponent<ActorView>();
         actor.setCo (

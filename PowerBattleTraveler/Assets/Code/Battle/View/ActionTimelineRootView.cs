@@ -24,17 +24,6 @@ public class ActionTimelineRootView : MonoBehaviour
     }
     private ActionTimelineView m_CurrentActionTimelineView = default;
 
-    // /// <summary>
-    // /// 次のターンの行動リスト
-    // /// </summary>
-    // [SerializeField] private Transform m_NextActionTimelineRoot = default;
-    // public ActionTimelineView NextActionTimeline
-    // {
-    //     get => this.m_NextActionTimelineView;
-    //     private set => this.m_NextActionTimelineView = value;
-    // }
-    // private ActionTimelineView m_NextActionTimelineView = default;
-
     /// <summary>
     /// 初期化
     /// </summary>
@@ -42,9 +31,6 @@ public class ActionTimelineRootView : MonoBehaviour
     {
         var obj = Instantiate(m_ActionTimelinePrefab, m_CurrentActionTimelineRoot);
         CurrentActionTimeline = obj.GetComponent<ActionTimelineView>();
-
-        // var obj2 = Instantiate(m_ActionTimelinePrefab, m_NextActionTimelineRoot);
-        // NextActionTimeline = obj2.GetComponent<ActionTimelineView>();
     }
 
     /// <summary>
@@ -53,7 +39,8 @@ public class ActionTimelineRootView : MonoBehaviour
     /// <returns></returns>
     public async UniTask StartAnim()
     {
-        
+        // タイムライン全体のアニメーション
+        await m_CurrentActionTimelineView.StartAnim();
     }
 }
 } // Battle

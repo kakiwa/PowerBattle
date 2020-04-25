@@ -18,6 +18,21 @@ private class TurnStartState : ImtStateMachine<BattleStateManager>.State
     {
         Debug.Log("ターンスタート準備");
 
+        // 行動順を決定
+        var actors = Context.m_BattleDataManager.Actors;
+        foreach (var it in actors)
+        {
+            IAction actionCommand = it.Value.ActorType == ActorType.PLAYER ?
+                (IAction)new PlayerAction(it.Key) :
+                (IAction)new EnemyDiside(it.Key) ;
+
+            // タイムラインに追加
+            Context.m_ViewManager.ActionTimeline.AddElement(it.Value);
+
+            // 行動リストに追加
+            Context.m_NextActionList.Add(actionCommand);
+        }
+
         // todo: 同時にはしらせてもいい説
         // 行動リスト更新
         await ActionTimelineSwap();
@@ -42,10 +57,8 @@ private class TurnStartState : ImtStateMachine<BattleStateManager>.State
         ++Context.m_BattleDataManager.TurnData.turnCount;
         Context.m_ViewManager.setTurn(Context.m_BattleDataManager.TurnData.turnCount);
 
-        // todo: てきとーな演出
-        await UniTask.Delay(
-            TimeSpan.FromSeconds(1)
-        );
+
+        await Context.m_ViewManager.ActionTimeline.TurnStartAnim();
     }
 
     /// <summary>
@@ -57,8 +70,6 @@ private class TurnStartState : ImtStateMachine<BattleStateManager>.State
         Context.m_ActionList = new List<IAction>(Context.m_NextActionList);
         // 古い行動予約リストをクリア
         Context.m_NextActionList.Clear();
-
-
 
         await UniTask.Yield();
     }

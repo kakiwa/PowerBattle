@@ -27,7 +27,7 @@ public struct ActorData{
 /// <summary>
 /// 戦闘時に使うデータ類をまとめたクラス
 /// </summary>
-public class BattleDataManager 
+public class BattleDataManager
 {
     public TurnData TurnData = new TurnData();
 
@@ -62,7 +62,8 @@ public class BattleDataManager
             Actors.Add(i, data);
         }
         const uint enStartNum = plNum + 1;
-        for (uint i = enStartNum; i <= enStartNum ; ++i)
+        const uint enNum = enStartNum + 3;
+        for (uint i = enStartNum; i < enNum ; ++i)
         {
             var data = new ActorData();
             data.ActorType = ActorType.ENEMY;
