@@ -44,14 +44,14 @@ public class EnemyDiside : IAction
         var ownTransform = viewManager.ActorsRootView.ActorViews[ownId].transform;
         var pos = ownTransform.position.x;
         // 前に
-        await ownTransform.DOMoveX(pos - 1.0f, 0.5f).SetEase(Ease.InQuart);
+        await ownTransform.DOMoveX(pos - 1.0f, 0.1f).SetEase(Ease.InQuart);
 
         // ぐわぁ
         var targetTransform = viewManager.ActorsRootView.ActorViews[targetId].transform;
         await targetTransform.DOShakePosition(0.5f).SetEase(Ease.InQuart);
 
         // もどる
-        await ownTransform.DOMoveX(pos, 0.5f).SetEase(Ease.InQuart);
+        await ownTransform.DOMoveX(pos, 0.1f).SetEase(Ease.InQuart);
     }
 
 #endregion Animations

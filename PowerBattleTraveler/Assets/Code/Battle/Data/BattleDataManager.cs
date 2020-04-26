@@ -21,6 +21,8 @@ public struct ActorData{
     public int Mp{get;set;}
     public int MaxMp{get;set;}
 
+    public bool IsAlive{get;set;}
+
     // TODO: リソースデータもここにおくa？
 }
 
@@ -52,11 +54,12 @@ public class BattleDataManager
         {
             var data = new ActorData();
             data.ActorType = ActorType.PLAYER;
+            data.IsAlive = true;
             data.Name = "味方" + i.ToString();
             data.MaxHp = 456;
             data.Hp = data.MaxHp;
             data.Speed = 2;
-            data.Attack = 3;
+            data.Attack = 5;
             data.MaxMp = 123456;
             data.Mp = data.MaxHp;
             Actors.Add(i, data);
@@ -67,6 +70,7 @@ public class BattleDataManager
         {
             var data = new ActorData();
             data.ActorType = ActorType.ENEMY;
+            data.IsAlive = true;
             data.Name = "敵" + i.ToString();
             data.Hp = 5;
             data.Speed = (int)i;

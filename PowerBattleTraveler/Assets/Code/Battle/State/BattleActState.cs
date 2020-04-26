@@ -20,7 +20,7 @@ private class ActState : ImtStateMachine<BattleStateManager>.State
     protected override async void Enter()
     {
         // リストの頭から行動
-        m_Action = Context.m_ActionList.First();
+        m_Action = Context.m_ActionList.First().Value;
 
         await ActStartAnimation();
 

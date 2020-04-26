@@ -55,7 +55,6 @@ public class BattleViewManager : MonoBehaviour
         // キャラのView初期化
         foreach (var actor in battleData.Actors)
         {
-            Debug.Log(actor.Key);
             // アクターの3Dデータ追加
             m_ActorsRootView.AddActor(actor);
 

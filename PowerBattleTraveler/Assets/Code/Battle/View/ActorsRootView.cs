@@ -63,6 +63,12 @@ public class ActorsRootView : MonoBehaviour
         m_ActorViews.Add(actorData.Key, actor);
     }
 
+    public void RemoveActor(uint actorId)
+    {
+        Destroy(m_ActorViews[actorId].gameObject);
+        m_ActorViews.Remove(actorId);
+    }
+
     /// <summary>
     /// アクタービュー取得
     /// </summary>
