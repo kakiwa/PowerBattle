@@ -43,33 +43,36 @@ public class ActionTimelineView : MonoBehaviour
     /// <summary>
     /// タイムラインに乗るアクターViewリスト
     /// </summary>
-    private List<ActionTimelineElementView> m_ElementList = new List<ActionTimelineElementView>();
+    /// <typeparam name="uint">アクターID</typeparam>
+    /// <typeparam name="ActionTimelineElementView">要素</typeparam>
+    private Dictionary<uint, ActionTimelineElementView> m_ElementList = new Dictionary<uint, ActionTimelineElementView>();
 
     void Awake()
     {
 
     }
+    public void clearccc(){m_ElementList.Clear();}
 
     /// <summary>
     /// 要素を追加
     /// </summary>
-    public void AddElement(ActorData actorData)
+    public void AddElement(KeyValuePair<uint, ActorData> actor)
     {
         var obj = Instantiate(m_ElementPrefab, m_ElementsRoot);
         var element = obj.GetComponent<ActionTimelineElementView>();
         // 見てくれを設定
-        element.SetCo(actorData.ActorType == ActorType.PLAYER ? Color.green : Color.red);
+        element.SetCo(actor.Value.ActorType == ActorType.PLAYER ? Color.green : Color.red);
 
         // 前の要素の後ろにおく
         if (m_ElementList.Count != 0)
         {
-            var previousElement = m_ElementList.Last().transform.localPosition;
+            var previousElement = m_ElementList.Last().Value.transform.localPosition;
             previousElement.x += 150.0f;
             obj.transform.localPosition = previousElement;
         }
 
         // リストに追加
-        m_ElementList.Add(element);
+        m_ElementList.Add(actor.Key, element);
     }
 
     public void ResetElementsAlpha()
@@ -82,10 +85,17 @@ public class ActionTimelineView : MonoBehaviour
     /// </summary>
     private void DropTopElement()
     {
-        m_ElementList.RemoveAt(0);
+        uint actorId = m_ElementList.First().Key;
+        m_ElementList.Remove(actorId);
     }
 
-
+    /// <summary>
+    /// 指定の要素を消し去る
+    /// </summary>
+    private void DropElement(uint actorId)
+    {
+        m_ElementList.Remove(actorId);
+    }
 
 #region Animations
 
@@ -103,7 +113,7 @@ public class ActionTimelineView : MonoBehaviour
             new Func<UniTask>(
                 async () =>
                 {
-                    await top.transform.DOMoveX(m_TopElementPos.position.x,MAX_TIME).SetEase(Ease.OutQuint);
+                    await top.Value.transform.DOMoveX(m_TopElementPos.position.x,MAX_TIME).SetEase(Ease.OutQuint);
                 }
             )()
         );
@@ -113,7 +123,7 @@ public class ActionTimelineView : MonoBehaviour
             new Func<UniTask>(
                 async () =>
                 {
-                    await top.transform.DOScale(new Vector3(0.75f, 0.75f, 0),MAX_TIME).SetEase(Ease.OutQuint);
+                    await top.Value.transform.DOScale(new Vector3(0.75f, 0.75f, 0),MAX_TIME).SetEase(Ease.OutQuint);
                 }
             )()
         );
@@ -125,7 +135,6 @@ public class ActionTimelineView : MonoBehaviour
     /// <summary>
     /// 先頭の要素ドロップアウト演出
     /// </summary>
-    /// <returns></returns>
     public async UniTask TopElementDropOutAnim()
     {
         const float MAX_TIME = 0.5f;
@@ -137,7 +146,7 @@ public class ActionTimelineView : MonoBehaviour
             new Func<UniTask>(
                 async () =>
                 {
-                    await top.transform.DOScale(new Vector3(3.0f, 3.0f, 1.0f), MAX_TIME).SetEase(Ease.OutQuart);
+                    await top.Value.transform.DOScale(new Vector3(3.0f, 3.0f, 1.0f), MAX_TIME).SetEase(Ease.OutQuart);
                 }
             )()
         );
@@ -147,13 +156,15 @@ public class ActionTimelineView : MonoBehaviour
             new Func<UniTask>(
                 async () =>
                 {
-                    var topCanvasGroup = top.GetComponent<CanvasGroup>();
+                    var topCanvasGroup = top.Value.GetComponent<CanvasGroup>();
                     await topCanvasGroup.DOFade(0.0f, MAX_TIME).SetEase(Ease.OutQuart);
                 }
             )()
         );
 
         await UniTask.WhenAll(tasks);
+
+        // リストからも削除
         DropTopElement();
     }
 
@@ -170,20 +181,66 @@ public class ActionTimelineView : MonoBehaviour
         var targetSize = m_ElementList.Count;
         for (var index = 1 ; index < targetSize ; ++index)
         {
-            var element = m_ElementList[index];
+            var element = m_ElementList.ElementAt(index);
             var elementPosX = m_ElementsRoot.position.x;
-            var targetPosX = elementPosX + element.Width * (index - 1);
-            Debug.Log(element.Width);
+            var targetPosX = elementPosX + element.Value.Width * (index - 1);
             tasks.Add(
                 new Func<UniTask>(
                     async () =>
                     {
-                        await element.transform.DOMoveX(targetPosX, MAX_TIME).SetEase(Ease.OutQuint);
+                        await element.Value.transform.DOMoveX(targetPosX, MAX_TIME).SetEase(Ease.OutQuint);
                     }
                 )()
             );
         }
         await UniTask.WhenAll(tasks);
+    }
+
+    /// <summary>
+    /// 指定した要素を消す
+    /// </summary>
+    public async UniTask RemoveAnim(uint actorId)
+    {
+        const float MAX_TIME = 0.6f;
+        // 演出リスト
+        List<UniTask> tasks = new List<UniTask>();
+        var element = m_ElementList[actorId];
+
+        // フリフリ
+        tasks.Add(
+            new Func<UniTask>(
+                async () =>
+                {
+                    await element.transform.DOShakeRotation(MAX_TIME);
+                }
+            )()
+        );
+
+        tasks.Add(
+            new Func<UniTask>(
+                async () =>
+                {
+                    await element.transform.DOShakeScale(MAX_TIME);
+                }
+            )()
+        );
+
+        // 透明
+        tasks.Add(
+            new Func<UniTask>(
+                async () =>
+                {
+                    var canvasGroup = element.GetComponent<CanvasGroup>();
+                    await canvasGroup.DOFade(0.0f, MAX_TIME).SetEase(Ease.OutQuart);
+                }
+            )()
+        );
+
+        // 全演出をまつ
+        await UniTask.WhenAll(tasks);
+
+        // 指定の要素を消す
+        DropElement(actorId);
     }
 
     /// <summary>

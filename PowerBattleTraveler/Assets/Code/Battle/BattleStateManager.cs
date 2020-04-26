@@ -63,8 +63,8 @@ public partial class BattleStateManager : MonoBehaviour
     /// <summary>
     /// 行動のリスト
     /// </summary>
-    List<IAction> m_ActionList = new List<IAction>();
-    List<IAction> m_NextActionList = new List<IAction>();
+    Dictionary<uint, IAction> m_ActionList = new Dictionary<uint, IAction>();
+    Dictionary<uint, IAction> m_NextActionList = new Dictionary<uint, IAction>();
 
     /// <summary>
     /// 全体の更新

@@ -7,6 +7,7 @@ using UniRx.Async;
 using UnityEngine.Rendering;
 using DG.Tweening;
 using Common;
+using System.Collections.Generic;
 
 namespace Battle {
 
@@ -26,24 +27,40 @@ private class EndCheckState : ImtStateMachine<BattleStateManager>.State
         int playerCount = 0;
         int enemyCount  = 0;
 
-        foreach (var actor in Context.m_BattleDataManager.Actors) {
+        List<uint> deathActorIdList = new List<uint>();
+
+        // ステータスチェック
+        foreach (var actor in Context.m_BattleDataManager.Actors)
+        {
             if (actor.Value.Hp <= 0)
             {
+                if (actor.Value.IsAlive)
+                {
+                    deathActorIdList.Add(actor.Key);
+                }
                 continue;
             }
             var _ = actor.Value.ActorType == ActorType.PLAYER ? ++playerCount : ++enemyCount;
         }
 
-        var nextState
-            = (playerCount == 0) || (enemyCount == 0)
-            ? StateEventType.BATTLE_END
-            : StateEventType.NEXT_ACTOR;
+        // 死亡アニメーション
+        if (deathActorIdList.Count != 0)
+        {
+            await DeathAnim(deathActorIdList);
+        }
 
-        Debug.Log("行動リスト数:" + Context.m_ActionList.Count);
+        // 基本は次のキャラへ
+        StateEventType nextState = StateEventType.NEXT_ACTOR;
         // ターン切り替えチェック
         if (Context.m_ActionList.Count == 0) {
             TurnEnd();
             nextState = StateEventType.TURN_START;
+        }
+
+        // 戦闘終了チェック
+        if (playerCount == 0 || enemyCount == 0)
+        {
+            nextState = StateEventType.BATTLE_END;
         }
 
         StateMachine.SendEvent((int)nextState);
@@ -59,13 +76,9 @@ private class EndCheckState : ImtStateMachine<BattleStateManager>.State
     /// <returns></returns>
     private async UniTask ActionListUpdate()
     {
-        var action = Context.m_ActionList.First();
-        // Context.m_NextActionList.Add(action);
-        Context.m_ActionList.Remove(action);
         // 行動リストの一つ目をけす
-
-
-        // 行動リストをずらす
+        var action = Context.m_ActionList.First();
+        Context.m_ActionList.Remove(action.Key);
 
         //
         await UniTask.Yield();
@@ -75,6 +88,31 @@ private class EndCheckState : ImtStateMachine<BattleStateManager>.State
     {
         Context.m_ViewManager.ActionTimeline.ResetElementsAlpha();
     }
+
+#region Animation
+
+    private async UniTask DeathAnim(List<uint> deathActorIdList)
+    {
+        List<UniTask> tasks = new List<UniTask>();
+        foreach (var deathId in deathActorIdList)
+        {
+            // タイムラインから除く
+            tasks.Add(Context.m_ViewManager.ActionTimeline.RemoveAnim(deathId));
+            //TODO アクターモデルの死亡も追加
+            Context.m_ViewManager.ActorsRootView.RemoveActor(deathId);
+
+            // 行動リストデータからも消す
+            Context.m_ActionList.Remove(deathId);
+
+            // データ更新
+            var d = Context.m_BattleDataManager.Actors[deathId];
+            d.IsAlive = false;
+            Context.m_BattleDataManager.Actors[deathId] = d;
+        }
+        await UniTask.WhenAll(tasks);
+    }
+
+#endregion Animation
 }
 
 }
