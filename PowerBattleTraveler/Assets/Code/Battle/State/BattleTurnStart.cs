@@ -56,7 +56,7 @@ private class TurnStartState : ImtStateMachine<BattleStateManager>.State
         }
 
         // TODO:同スピードの判定式も追加
-        speedDataList.Sort((a, b) => a.Value - b.Value);
+        speedDataList.Sort((a, b) => b.Value - a.Value);
 
         //
 
