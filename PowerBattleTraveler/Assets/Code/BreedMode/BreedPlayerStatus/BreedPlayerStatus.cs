@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// 育成モードプレイヤーキャラクター基礎ステータス情報クラス
-/// </summary>
 namespace BreedMode
 {
 /// <summary>

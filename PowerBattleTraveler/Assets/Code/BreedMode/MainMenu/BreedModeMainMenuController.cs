@@ -54,7 +54,7 @@ public class BreedModeMainMenuController : MonoBehaviour,IMainMenuEvents
 
     void Update()
     {
-        Debug.Log(m_playerBattleData.hp);
+        
     }
 
     #region  //　ダミーデータ

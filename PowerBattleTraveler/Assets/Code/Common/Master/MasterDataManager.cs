@@ -11,8 +11,12 @@ public class MasterDataManager : MonoBehaviour
     //　マス情報（レーン）
     BreedFieldLaneMaster breedFieldLaneMaster = default;
 
+    public BreedFieldLaneMaster breedFieldLaneMasterData { get => breedFieldLaneMaster; }
+
     //　マス情報（マス内部）
     BreedFieldMassMaster breedFieldMassMaster = default;
+
+    public BreedFieldMassMaster breedFieldMassMasterData { get => breedFieldMassMaster; }
 
     //-----------------------------------------------------------------------//
     //　データ管理処理
@@ -52,8 +56,10 @@ public class MasterDataManager : MonoBehaviour
         // 唯一のインスタンスなら、シーン遷移しても残す
         DontDestroyOnLoad(this.gameObject);
 
-        LoadMaster();
+        //LoadMaster();
+        LoadMasterAll();
     }
+
     //消える時の処理
     private void OnDestroy()
     {
@@ -90,7 +96,7 @@ public class MasterDataManager : MonoBehaviour
 
         //　各種マスタの取得処理
         breedFieldLaneMaster = new BreedFieldLaneMaster();
-        breedFieldMassMaster = new BreedFieldMassMaster();
+        //breedFieldMassMaster = new BreedFieldMassMaster();
     }
 
     ///<summary>

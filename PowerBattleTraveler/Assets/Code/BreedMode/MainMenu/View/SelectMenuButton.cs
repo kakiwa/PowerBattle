@@ -14,7 +14,7 @@ public class SelectMenuButton : MonoBehaviour
     [SerializeField]
     private BreedModeMainMenuController m_controller = default;
     [SerializeField]
-    private string m_buttonName;
+    private string m_buttonName = default;
     /// <summary>
     /// ボタンが押された時の処理
     /// </summary>
