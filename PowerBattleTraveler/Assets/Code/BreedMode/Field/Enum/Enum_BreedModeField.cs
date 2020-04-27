@@ -33,8 +33,4 @@ public enum　MassTextureMount
     IWAYAMA,
     KARI
 }
-
-
-
-
 }

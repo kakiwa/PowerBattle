@@ -22,14 +22,13 @@ public class BreedModeFieldScrollView : FancyScrollView<BreedModeFieldDataList,B
 
     void Start()
     {
-        
         m_scroller.OnValueChanged(UpdatePosition);
         m_scroller.OnSelectionChanged(UpdateSelection);
     }
 
     void UpdateSelection(int index)
     {
-        if (Context.SelectedIndex == index)
+        if (IsSelectedIndex(index))
         {
             return;
         }
@@ -46,7 +45,7 @@ public class BreedModeFieldScrollView : FancyScrollView<BreedModeFieldDataList,B
 
     public void SelectCell(int index)
     {
-        if (index < 0 || index >= ItemsSource.Count || index == Context.SelectedIndex)
+        if (IsOutOfRange(index) || IsSelectedIndex(index))
         {
             return;
         }
@@ -58,7 +57,24 @@ public class BreedModeFieldScrollView : FancyScrollView<BreedModeFieldDataList,B
     public int NowSelectCell()
     {
         return Context.SelectedIndex;
+    }
 
+    bool IsOutOfRange(int index)
+    {
+        if (index < 0 || index >= ItemsSource.Count)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    bool IsSelectedIndex(int index)
+    {
+        if (index == Context.SelectedIndex)
+        {
+            return true;
+        }
+        return false;
     }
     
 }

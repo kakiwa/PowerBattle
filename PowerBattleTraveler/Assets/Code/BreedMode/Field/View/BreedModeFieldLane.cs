@@ -36,7 +36,7 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
 
     void Start()
     {
-        for(int i = 0;i< m_massSize; ++i)
+        for　(int i = 0;i< m_massSize; ++i)
         {
             m_mass[i].m_button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
         }
@@ -48,7 +48,8 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
     public override void UpdateContent(BreedModeFieldDataList massdata)
     {
         m_massSize = massdata.m_massSize;
-        for(int i = 0;i< m_massSize; ++i)
+
+        for　(int i = 0;i< m_massSize; ++i)
         {
             m_mass[i].m_obj.SetActive(true);
         }
@@ -63,7 +64,7 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
         m_animator.Play(AnimatorHash.Scroll, -1, position);
         m_animator.speed = 0;
 
-        for(int i = 0; i<m_massSize;++i)
+        for　(int i = 0; i<m_massSize;++i)
         {
             m_mass[i].m_animation.Play(AnimatorHash.Scroll, -1,position);
             m_mass[i].m_animation.speed = 0;

@@ -34,16 +34,15 @@ public class BreedModeFieldController : MonoBehaviour
 
     public void Start()
     {
-        //Init(m_MassList);
-        m_massSize = MasterDataManager.Instance.breedFieldLaneMasterData.Data.Count;
+        var masterData = MasterDataManager.Instance.breedFieldLaneMasterData.Data;
+        m_massSize = masterData.Count;
         Debug.Log(m_massSize);
 
-        List<BreedModeFieldDataList> data = default;
-        data = new List<BreedModeFieldDataList>();
+        List<BreedModeFieldDataList> data = new List<BreedModeFieldDataList>();
 
-        foreach(var n in MasterDataManager.Instance.breedFieldLaneMasterData.Data)
+        foreach　(var n in MasterDataManager.Instance.breedFieldLaneMasterData.Data)
         {
-            if(n.fieldId == m_fieldNum)
+            if　(n.fieldId == m_fieldNum)
             {
                 var laneData =  new BreedModeFieldDataList(n.massSize);
                 data.Add(laneData);
@@ -64,7 +63,6 @@ public class BreedModeFieldController : MonoBehaviour
             m_massList.Add(mass);
         }
     }
-
 
     /// <summary>
     /// シーン遷移関数
