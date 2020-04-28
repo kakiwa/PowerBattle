@@ -36,11 +36,10 @@ public class BreedModeFieldController : MonoBehaviour
     {
         var masterData = MasterDataManager.Instance.breedFieldLaneMasterData.Data;
         m_massSize = masterData.Count;
-        Debug.Log(m_massSize);
 
         List<BreedModeFieldDataList> data = new List<BreedModeFieldDataList>();
 
-        foreach　(var n in MasterDataManager.Instance.breedFieldLaneMasterData.Data)
+        foreach (var n in masterData)
         {
             if　(n.fieldId == m_fieldNum)
             {

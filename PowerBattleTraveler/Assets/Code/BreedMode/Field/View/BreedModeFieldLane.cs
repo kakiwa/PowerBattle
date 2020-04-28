@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using FancyScrollView;
+using System;
+using System.Linq;
 
 namespace BreedMode
 {
@@ -36,9 +38,9 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
 
     void Start()
     {
-        for　(int i = 0;i< m_massSize; ++i)
+        foreach (var mass in m_mass)
         {
-            m_mass[i].m_button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
+            mass.m_button.onClick.AddListener(() => Context.OnCellClicked?.Invoke(Index));
         }
     }
 
@@ -49,9 +51,16 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
     {
         m_massSize = massdata.m_massSize;
 
-        for　(int i = 0;i< m_massSize; ++i)
+        foreach (var mass in m_mass.Select((val, index) => new { val, index }))
         {
-            m_mass[i].m_obj.SetActive(true);
+            if (IsOutOfRange(m_massSize,mass.index))
+            {
+                mass.val.m_obj.SetActive(true);
+            }
+            else
+            {
+                mass.val.m_obj.SetActive(false);
+            }
         }
     }
 
@@ -64,10 +73,13 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
         m_animator.Play(AnimatorHash.Scroll, -1, position);
         m_animator.speed = 0;
 
-        for　(int i = 0; i<m_massSize;++i)
+        foreach (var mass in m_mass.Select((val, index) => new { val, index }))
         {
-            m_mass[i].m_animation.Play(AnimatorHash.Scroll, -1,position);
-            m_mass[i].m_animation.speed = 0;
+            if (IsOutOfRange(m_massSize,mass.index))
+            {
+                mass.val.m_animation.Play(AnimatorHash.Scroll, -1,position);
+                mass.val.m_animation.speed = 0;
+            }
         }
     }
 
@@ -75,6 +87,15 @@ public class BreedModeFieldLane : FancyCell<BreedModeFieldDataList,BreedModeFiel
     // 現在位置を保持しておいて OnEnable のタイミングで現在位置を再設定する
     float m_currentPosition = 0;
     void OnEnable() => UpdatePosition(m_currentPosition);
+
+    bool IsOutOfRange(int size,int num)
+    {
+        if (num < size)
+        {
+            return true;
+        }
+        return false;
+    }
 
 
 }
