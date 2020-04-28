@@ -41,7 +41,7 @@ public class BreedModeFieldController : MonoBehaviour
 
         foreach (var n in masterData)
         {
-            if　(n.fieldId == m_fieldNum)
+            if (n.fieldId == m_fieldNum)
             {
                 var laneData =  new BreedModeFieldDataList(n.massSize);
                 data.Add(laneData);
